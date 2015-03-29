@@ -164,9 +164,9 @@ describe MyScreen do
 end
 ```
 
-## wait_till/wait_max
+## Testing HTTP requests
 
-Keeps trying the block until it returns a truthy value, up to the timeout specified (defaulted to 3 seconds).
+Use `wait_till` which keeps trying the block until it returns a truthy value, up to the timeout specified (defaulted to 3 seconds).
 
 ```ruby
 describe "HTTP call" do
@@ -181,13 +181,14 @@ describe "HTTP call" do
 end
 ```
 
-Another way to approach this:
+Another way to approach this is to use `wait_max` and the `resume` command, which is what I recommend:
 
 ```ruby
 describe "HTTP call" do
   it "returns a result" do
     @ip = nil
     AFMotion::JSON.get("http://ip.jsontest.com/") do |result|
+      result.should.be.success
       @ip = result.object["ip"]
       resume
     end
