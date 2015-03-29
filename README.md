@@ -106,7 +106,62 @@ end
 You can mount a UIViewController into the simulator with the `tests` class method. This will look for a `controller` method (or provide its own if you don't).
 
 ```ruby
+describe MyScreen do
+  tests MyScreen
+  
+  def controller
+    @controller ||= MyScreen.new
+  end
+  
+  after { @controller = nil }
+  
+  it "has the right title" do
+    view("My Screen").should.be.kind_of(UILabel)
+  end
+end
+```
 
+If you want to have your screen in a navigation controller, make sure your `controller` method returns the navigationController.
+
+```ruby
+describe MyScreen do
+  tests MyScreen
+  
+  def screen
+    @screen ||= MyScreen.new(nav_bar: true) # ProMotion-style
+  end
+  
+  def controller
+    screen.navigationController
+  end
+  
+  after { @screen = nil }
+  
+  it "has the right title" do
+    view("My Screen").should.be.kind_of(UILabel)
+  end
+end
+```
+
+## tap
+
+Taps a button on the screen.
+
+```ruby
+describe MyScreen do
+  tests MyScreen
+  
+  def controller
+    @controller ||= MyScreen.new
+  end
+  
+  after { @controller = nil }
+
+  it "has a button" do
+    tap("Go Forth And Conquer")
+    view("Conquered!").should.be.present
+  end
+end
 ```
 
 ## wait_till/wait_max
