@@ -105,6 +105,8 @@ end
 
 You can mount a UIViewController into the simulator with the `tests` class method. This will look for a `controller` method (or provide its own if you don't).
 
+Keep in mind these tests are *very slow*. Use unit tests (even for view controllers) where possible.
+
 ```ruby
 describe MyScreen do
   tests MyScreen
