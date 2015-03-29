@@ -170,11 +170,21 @@ end
 gem "motion-stump"
 ```
 
+`.stub!` will replace a method and return the result you specify. It doesn't care if it's called or not, though.
+
 ```ruby
-describe "
+  screen = MyScreen.new(arg: true)
+  screen.stub!(:foos, return: [])
+  screen.stub!(:bars, return: [ {}, {} ])
 ```
 
+`.mock!` is the same as `.stub!`, but will fail the test if it's not called.
 
+You can also pass a block to do more stuff, including assertations:
+
+```ruby
+
+```
 
 ## Debugging tests
 
