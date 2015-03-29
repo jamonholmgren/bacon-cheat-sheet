@@ -183,7 +183,14 @@ gem "motion-stump"
 You can also pass a block to do more stuff, including assertations:
 
 ```ruby
-
+it "does a Google search" do
+  API::Client.mock!(:get) do |url, params|
+    url.should == "http://google.com"
+    params[:q].should == "Nickelback sucks"
+    resume
+  end
+  wait_max 20 {}
+end
 ```
 
 ## Debugging tests
