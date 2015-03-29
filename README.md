@@ -52,9 +52,9 @@ describe Hash do
 end
 ```
 
-## be
+## question methods
 
-`.be` allows you to test the truthiness of a `x?` method, such as `.kind_of?`. Remove the question mark from the method, like `x.should.be.kind_of(Hash)`.
+Bacon allows you to test the truthiness of a `x?` method, such as `.kind_of?`. Remove the question mark from the method to test it, like `x.should.be.kind_of(Hash)`.
 
 ```ruby
 describe Hash do
@@ -64,6 +64,130 @@ describe Hash do
   end
 end
 ```
+
+## be, a, an
+
+These are mainly just syntactic sugar so you can write something like this: 
+
+```ruby
+describe Hash do
+  it "is a hash instance" do
+    obj = {}
+    obj.should.be.a.kind_of(Hash)
+  end
+end
+```
+
+## not
+
+Tests that the opposite is true.
+
+```ruby
+describe Hash do
+  it "is not an array" do
+    obj = {}
+    obj.should.not.be.kind_of(Array)
+  end
+end
+```
+
+## Exceptions
+
+```ruby
+describe "Viper::SnakeCase" do
+  it "has a 'Viper::SnakeCase' module" do
+    should.not.raise(NameError) { Viper::SnakeCase }
+  end
+end
+```
+
+## tests MyViewController
+
+You can mount a UIViewController into the simulator with the `tests` class method. This will look for a `controller` method (or provide its own if you don't).
+
+```ruby
+
+```
+
+## wait_till/wait_max
+
+Keeps trying the block until it returns a truthy value, up to the timeout specified (defaulted to 3 seconds).
+
+```ruby
+describe "HTTP call" do
+  it "returns a result" do
+    @ip = nil
+    AFMotion::JSON.get("http://ip.jsontest.com/") do |result|
+      @ip = result.object["ip"]
+    end
+    wait_till 20 { @ip.nil? == false }
+    @ip.should == "12.34.56.78"
+  end
+end
+```
+
+Another way to approach this:
+
+```ruby
+describe "HTTP call" do
+  it "returns a result" do
+    @ip = nil
+    AFMotion::JSON.get("http://ip.jsontest.com/") do |result|
+      @ip = result.object["ip"]
+      resume
+    end
+    wait_max 20 do
+      @ip.should == "12.34.56.78"
+    end
+  end
+end
+```
+
+## Useful Gems
+
+### [motion-juxtapose](https://github.com/terriblelabs/motion-juxtapose)
+
+Visual regression testing. You get a *lot* of value with a small test.
+
+```ruby
+gem "motion-juxtapose"
+```
+
+```ruby
+describe SettingsScreen do
+  tests SettingsScreen
+
+  it "looks like a SettingsScreen" do
+    views(UIView).length.should.be > 0 # Ensure views are loaded first
+    it_should_look_like "SettingsScreen", 4 # 4% "fuzz factor"
+  end
+end
+```
+
+### [motion-stump](https://github.com/siuying/motion-stump/)
+
+```ruby
+gem "motion-stump"
+```
+
+```ruby
+describe "
+```
+
+
+
+## Debugging tests
+
+Sometimes, you'll get very useless output from a failed test. Try changing your spec output style.
+
+```ruby
+# In your Rakefile
+ENV["output"] ||= "tap"
+```
+
+
+
+
 
 
 
