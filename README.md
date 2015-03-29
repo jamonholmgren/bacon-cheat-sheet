@@ -248,6 +248,27 @@ it "does a Google search" do
 end
 ```
 
+### [motion-facon](https://github.com/svyatogor/motion-facon)
+
+A good alternative to motion-stump (above). I haven't used it all that much, but its syntax is very pretty. It's fallen a bit out of date, however.
+
+```ruby
+  describe 'PersonController' do
+    extend Facon::SpecHelpers
+
+    before do
+      @konata = mock('konata', :id => 1, :name => 'Konata Izumi')
+      @kagami = mock('kagami', :id => 2, :name => 'Kagami Hiiragi')
+    end
+
+    it "should find all people" do
+      Person.should.receive(:find).with(:all).and_return([@konata, @kagami])
+
+      Person.find(:all).should == [@konata, @kagami]
+    end
+  end
+```
+
 ## Debugging tests
 
 Sometimes, you'll get very useless output from a failed test. Try changing your spec output style.
