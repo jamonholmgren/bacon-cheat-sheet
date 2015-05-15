@@ -272,6 +272,25 @@ A good alternative to motion-stump (above). I haven't used it all that much, but
   end
 ```
 
+### [webstub](https://github.com/nathankot/webstub)
+
+Easily stub out HTTP responses in RubyMotion specs.
+
+```ruby
+  it "should allow you to navigate to a website" do
+    controller = ProMotion::WebScreen.new
+    stub_request(:get, "https://www.google.com/").
+      to_return(body: %q{Google! <form action="/search">%}, content_type: "text/html")
+
+    controller.mock!(:load_finished) do
+      controller.html.should.include('<form action="/search"')
+      resume
+    end
+    controller.open_url(NSURL.URLWithString("https://www.google.com/"))
+    wait_max 5 {}
+  end
+```
+
 ## Debugging tests
 
 Sometimes, you'll get very useless output from a failed test. Try changing your spec output style.
